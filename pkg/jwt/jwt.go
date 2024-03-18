@@ -8,7 +8,6 @@ import (
 	"go.uber.org/zap"
 )
 
-// Secret TODO from config and reset her every some time.
 var Secret = []byte("super-secret")
 
 var (
