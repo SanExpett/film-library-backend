@@ -185,7 +185,7 @@ func (f *FilmHandler) DeleteFilmHandler(w http.ResponseWriter, r *http.Request) 
 //	@Accept      json
 //	@Produce    json
 //	@Param      id query uint64 true  "Film id"
-//	@Param      preFilm  body models.PreFilm false  "полностью опционален"
+//	@Param      preFilm  body models.FilmWithoutID false  "полностью опционален"
 //	@Success    200  {object} delivery.ResponseID
 //	@Failure    405  {string} string
 //	@Failure    500  {string} string
@@ -284,7 +284,7 @@ func (p *FilmHandler) GetFilmsListWithActorHandler(w http.ResponseWriter, r *htt
 //	@Success    200  {object} FilmListResponse
 //	@Failure    405  {string} string
 //	@Failure    500  {string} string
-//	@Failure    222  {object} responses.ErrorResponse "Error"
+//	@Failure    222  {object} delivery.ErrorResponse "Error"
 //	@Router      /film/get_list_of_films [get]
 func (f *FilmHandler) GetFilmsListHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
@@ -331,7 +331,7 @@ func (f *FilmHandler) GetFilmsListHandler(w http.ResponseWriter, r *http.Request
 //	@Success    200  {object} FilmListResponse
 //	@Failure    405  {string} string
 //	@Failure    500  {string} string
-//	@Failure    222  {object} responses.ErrorResponse "Error"
+//	@Failure    222  {object} delivery.ErrorResponse "Error"
 //	@Router      /film/search_by_title [get]
 func (f *FilmHandler) SearchFilmByTitleHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
@@ -365,7 +365,7 @@ func (f *FilmHandler) SearchFilmByTitleHandler(w http.ResponseWriter, r *http.Re
 //	@Success    200  {object} FilmListResponse
 //	@Failure    405  {string} string
 //	@Failure    500  {string} string
-//	@Failure    222  {object} responses.ErrorResponse "Error"
+//	@Failure    222  {object} delivery.ErrorResponse "Error"
 //	@Router      /film/search_by_actors_name [get]
 func (f *FilmHandler) SearchFilmByActorsNameHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {

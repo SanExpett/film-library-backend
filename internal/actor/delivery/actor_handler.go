@@ -221,7 +221,7 @@ func (a *ActorHandler) GetActorsListInFilmHandler(w http.ResponseWriter, r *http
 //	@Accept      json
 //	@Produce    json
 //	@Param      id  query uint64 true  "Actor id"
-//	@Param      preActor  body models.PreActor false  "полностью опционален"
+//	@Param      preActor  body models.ActorWithoutID false  "полностью опционален"
 //	@Success    200  {object} delivery.ResponseID
 //	@Failure    405  {string} string
 //	@Failure    500  {string} string

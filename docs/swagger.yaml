@@ -24,6 +24,74 @@ definitions:
       error:
         type: string
     type: object
+  github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseBodyID:
+    properties:
+      id:
+        type: integer
+    type: object
+  github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID:
+    properties:
+      body:
+        $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseBodyID'
+      status:
+        type: integer
+    type: object
+  github_com_SanExpett_film-library-backend_pkg_models.Actor:
+    properties:
+      autor_id:
+        type: integer
+      birthday:
+        type: string
+      created_at:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_SanExpett_film-library-backend_pkg_models.ActorWithoutID:
+    properties:
+      birthday:
+        type: string
+      gender:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_SanExpett_film-library-backend_pkg_models.Film:
+    properties:
+      autor_id:
+        type: integer
+      created_at:
+        type: string
+      description:
+        description: nolint
+        type: string
+      id:
+        type: integer
+      rating:
+        type: integer
+      release_date:
+        type: string
+      title:
+        type: string
+    type: object
+  github_com_SanExpett_film-library-backend_pkg_models.FilmWithoutID:
+    properties:
+      created_at:
+        type: string
+      description:
+        description: nolint
+        type: string
+      rating:
+        type: integer
+      release_date:
+        type: string
+      title:
+        type: string
+    type: object
   github_com_SanExpett_film-library-backend_pkg_models.UserWithoutID:
     properties:
       email:
@@ -31,12 +99,577 @@ definitions:
       password:
         type: string
     type: object
+  internal_actor_delivery.ActorListResponse:
+    properties:
+      body:
+        items:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.Actor'
+        type: array
+      status:
+        type: integer
+    type: object
+  internal_actor_delivery.ActorResponse:
+    properties:
+      body:
+        $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.Actor'
+      status:
+        type: integer
+    type: object
+  internal_film_delivery.FilmListResponse:
+    properties:
+      body:
+        items:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.Film'
+        type: array
+      status:
+        type: integer
+    type: object
+  internal_film_delivery.FilmResponse:
+    properties:
+      body:
+        $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.Film'
+      status:
+        type: integer
+    type: object
 info:
   contact: {}
   description: This is a server of FILM-LIBRARY server.
   title: FILM-LIBRARY project API
   version: "1.0"
 paths:
+  /actor/add:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        add Actor by data
+        Error.status can be:
+        StatusErrBadRequest      = 400
+        StatusErrInternalServer  = 500
+      parameters:
+      - description: Actor data for adding
+        in: body
+        name: Actor
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.ActorWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: add Actor
+      tags:
+      - Actor
+  /actor/delete:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        delete Actor for author using user id from cookies\jwt.
+        This totally removed Actor. Recovery will be impossible
+      parameters:
+      - description: Actor id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.Response'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: delete Actor
+      tags:
+      - Actor
+  /actor/get:
+    get:
+      consumes:
+      - application/json
+      description: get Actor by id
+      parameters:
+      - description: Actor id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_actor_delivery.ActorResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: get Actor
+      tags:
+      - Actor
+  /actor/get_list_of_actors_in_film:
+    get:
+      consumes:
+      - application/json
+      description: get actors by film id
+      parameters:
+      - description: film id
+        in: query
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_actor_delivery.ActorListResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: get actors list starred in film
+      tags:
+      - Actor
+  /actor/update:
+    patch:
+      consumes:
+      - application/json
+      description: update Actor by id
+      parameters:
+      - description: Actor id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: полностью опционален
+        in: body
+        name: preActor
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.ActorWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: update Actor
+      tags:
+      - Actor
+    put:
+      consumes:
+      - application/json
+      description: update Actor by id
+      parameters:
+      - description: Actor id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: полностью опционален
+        in: body
+        name: preActor
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.ActorWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: update Actor
+      tags:
+      - Actor
+  /film/add:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        add Film by data
+        Error.status can be:
+        StatusErrBadRequest      = 400
+        StatusErrInternalServer  = 500
+      parameters:
+      - description: Film data for adding
+        in: body
+        name: Film
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.FilmWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: add Film
+      tags:
+      - Film
+  /film/delete:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        delete Film for author using user id from cookies\jwt.
+        This totally removed Film. Recovery will be impossible
+      parameters:
+      - description: Film id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.Response'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: delete Film
+      tags:
+      - Film
+  /film/get:
+    get:
+      consumes:
+      - application/json
+      description: get Film by id
+      parameters:
+      - description: Film id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_film_delivery.FilmResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: get Film
+      tags:
+      - Film
+  /film/get_list_of_films:
+    get:
+      consumes:
+      - application/json
+      description: get Films by count and last_id return old Films
+      parameters:
+      - description: limit Films
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: offset of Films
+        in: query
+        name: offset
+        required: true
+        type: integer
+      - description: type of sort(nil - by rating, 1 - by time, 2 - by title)
+        in: query
+        name: sort_type
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_film_delivery.FilmListResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: get Films list
+      tags:
+      - Film
+  /film/get_list_of_films_with_actor:
+    get:
+      consumes:
+      - application/json
+      description: get Films by film id
+      parameters:
+      - description: film id
+        in: query
+        name: film_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_film_delivery.FilmListResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: get Films list starred in film
+      tags:
+      - Film
+  /film/search_by_actors_name:
+    get:
+      description: search top 5 common named films
+      parameters:
+      - description: searched string
+        in: query
+        name: searched
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_film_delivery.FilmListResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: search film by actors name
+      tags:
+      - Film
+  /film/search_by_title:
+    get:
+      description: search top 5 common named films
+      parameters:
+      - description: searched string
+        in: query
+        name: searched
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal_film_delivery.FilmListResponse'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: search Film
+      tags:
+      - Film
+  /film/update:
+    patch:
+      consumes:
+      - application/json
+      description: update Film by id
+      parameters:
+      - description: Film id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: полностью опционален
+        in: body
+        name: preFilm
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.FilmWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: update Film
+      tags:
+      - Film
+    put:
+      consumes:
+      - application/json
+      description: update Film by id
+      parameters:
+      - description: Film id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: полностью опционален
+        in: body
+        name: preFilm
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.FilmWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseID'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: update Film
+      tags:
+      - Film
   /logout:
     post:
       description: logout in app
