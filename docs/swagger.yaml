@@ -1,0 +1,141 @@
+basePath: /api/v1
+definitions:
+  github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse:
+    properties:
+      body:
+        $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseBodyError'
+      status:
+        type: integer
+    type: object
+  github_com_SanExpett_film-library-backend_internal_server_delivery.Response:
+    properties:
+      body:
+        $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseBody'
+      status:
+        type: integer
+    type: object
+  github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseBody:
+    properties:
+      message:
+        type: string
+    type: object
+  github_com_SanExpett_film-library-backend_internal_server_delivery.ResponseBodyError:
+    properties:
+      error:
+        type: string
+    type: object
+  github_com_SanExpett_film-library-backend_pkg_models.UserWithoutID:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a server of FILM-LIBRARY server.
+  title: FILM-LIBRARY project API
+  version: "1.0"
+paths:
+  /logout:
+    post:
+      description: logout in app
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.Response'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: logout
+      tags:
+      - auth
+  /signin:
+    get:
+      description: signin in app
+      parameters:
+      - description: user email for signin
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: user password for signin
+        in: query
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.Response'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: signin
+      tags:
+      - auth
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: |-
+        signup in app
+        Error.status can be:
+        StatusErrBadRequest      = 400
+        StatusErrInternalServer  = 500
+      parameters:
+      - description: user data for signup
+        in: body
+        name: preUser
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_SanExpett_film-library-backend_pkg_models.UserWithoutID'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.Response'
+        "222":
+          description: Error
+          schema:
+            $ref: '#/definitions/github_com_SanExpett_film-library-backend_internal_server_delivery.ErrorResponse'
+        "405":
+          description: Method Not Allowed
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: signup
+      tags:
+      - auth
+schemes:
+- http
+swagger: "2.0"
